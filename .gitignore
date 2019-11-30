@@ -105,3 +105,6 @@ venv.bak/
 
 # Others
 /documentation
+.vscode
+/input
+/output
