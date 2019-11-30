@@ -23,16 +23,16 @@ class CollConnection:
 
     def newUser(self, userid, username):
         document = {
-            'userid': userid,
+            'userID': userid,
             'username': username
         }
         return self.addDocument(document)
 
     def newMessage(self, userid, chatid, messageid, datetime, text):
         document = {
-            'idUser': userid,
-            'idChat': chatid,
-            'idMessage': messageid,
+            'userID': userid,
+            'ChatID': chatid,
+            'MessageID': messageid,
             'datetime': datetime,
             'text': text
         }
