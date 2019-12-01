@@ -1,18 +1,10 @@
-from bottle import post, get, request, response, run
-import mongodb as mdb
-from bson.json_util import loads, dumps
+#! /usr/bin/python3
+
+from bottle import post, get, request, response, run, Bottle
+import re
 import os
 from pymongo import MongoClient
-
-
-# Connect to MongoDB Atlas:
-mongodbUrl = os.getenv("MONGODBURL")
-client = MongoClient(mongodbUrl)
-db = client['chatsdb']
-users_coll = db['Users']
-messages_coll = db['Messages']
-users = mdb.CollConnection(os.getenv('MONGODBURL'), 'chatsdb', 'Users')
-messages = mdb.CollConnection(os.getenv('MONGODBURL'), 'chatsdb', 'Messages')
+import mongodb as mdb
 
 
 # User endpoint
@@ -20,27 +12,33 @@ messages = mdb.CollConnection(os.getenv('MONGODBURL'), 'chatsdb', 'Messages')
 def createUser():
     # extract and validate user
     try:
-        userid = request.forms.get("idUser")
-        username = request.forms.get('userName')
+        idUser = request.forms.get("idUser")
+        userName = request.forms.get('userName')
 
     except:
         raise ValueError
 
-    if userid in users_coll.distinct("userid"):
-        raise ValueError
-    else:
-        # insert document to mongo collection.
-        return {
-            "inserted_user_id": str(users.newUser(userid, username))}
+    # insert user to mongo collection.
+    return mdb.newUser(idUser, userName)
+
+
+@get("/user/<idUser>")
+def getuserName(idUser):
+    # get the userName of a given idUser
+    return mdb.getuserName(idUser)
+
+# TODO: response to post requests.
+
 
 # Chat endpoint
+
 @post("/message/create")
 def createMessage():
      # extract and validate user
     try:
-        userid = request.forms.get("idUser")
+        idUser = request.forms.get("idUser")
         chatid = request.forms.get('idChat')
-        messageid = request.forms.get('idMessage')
+        idMessage = request.forms.get('idMessage')
         datetime = request.forms.get('datetime')
         text = request.forms.get('text')
 
@@ -48,26 +46,43 @@ def createMessage():
         raise ValueError
 
     # insert document to mongo collection.
-    return {
-        "inserted_user_id": str(messages.newMessage(userid, chatid, messageid, datetime, text))
-    }
+    return mdb.newMessage(idUser, chatid, idMessage, datetime, text)
 
 
 @get("/messages/<chatid>")
 def getChat(chatid):
-    print(f'chat id: {chatid}')
-    return dumps(messages_coll.find({'idChat': str(chatid)}))
-
-# TODO REVIEW THIS!!!
-@get("/user/<user_ids>")
-def getUsers(user_ids):
-    return dumps(users_coll.find({'userid': {"$in": ["0", "1"]}})))
+    # get all the messages of a given chatid
+    return mdb.getChat(chatid)
 
 
 def main():
-    # run(host='localhost', port=8000)
-    print(dumps(users_coll.find({'userid': {"$in": ["0", "1"]}})))
+    run(host='localhost', port=8000)
 
 
 if __name__ == '__main__':
     main()
+
+
+# TODO REVIEW THIS!!!
+# # Bottle Object to process a list of numbers as a wildcard filter.
+# routelist = Bottle()
+
+# def list_filter(config):
+#     ''' Matches a comma separated list of numbers. '''
+#     delimiter = config or ','
+#     regexp = r'\d+(%s\d)*' % re.escape(delimiter)
+
+#     def to_python(match):
+#         return map(int, match.split(delimiter))
+
+#     def to_url(numbers):
+#         return delimiter.join(map(str, numbers))
+
+#     return regexp, to_python, to_url
+
+
+# routelist.router.add_filter('list', list_filter)
+
+# @routelist.route('/user/<ids:list>', method=['GET'])
+# def userNames(ids):
+#     return dumps(users_coll.find({'idUser': {"$in": ids}}))
