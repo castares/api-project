@@ -4,7 +4,7 @@ from bottle import post, get, request, response, run, Bottle
 import re
 import os
 from pymongo import MongoClient
-import mongodb as mdb
+import mongodb as mdb  # This project file mongodb.py
 
 
 # User endpoint
@@ -22,10 +22,10 @@ def createUser():
     return mdb.newUser(idUser, userName)
 
 
-@get("/user/<idUser>")
-def getuserName(idUser):
+@get("/user/<iduser>")
+def getuserName(iduser):
     # get the userName of a given idUser
-    return mdb.getuserName(idUser)
+    return mdb.getuserName(iduser)
 
 # TODO: response to post requests.
 
@@ -37,7 +37,7 @@ def createMessage():
      # extract and validate user
     try:
         idUser = request.forms.get("idUser")
-        chatid = request.forms.get('idChat')
+        idchat = request.forms.get('idChat')
         idMessage = request.forms.get('idMessage')
         datetime = request.forms.get('datetime')
         text = request.forms.get('text')
@@ -46,13 +46,13 @@ def createMessage():
         raise ValueError
 
     # insert document to mongo collection.
-    return mdb.newMessage(idUser, chatid, idMessage, datetime, text)
+    return mdb.newMessage(idUser, idchat, idMessage, datetime, text)
 
 
-@get("/messages/<chatid>")
-def getChat(chatid):
-    # get all the messages of a given chatid
-    return mdb.getChat(chatid)
+@get("/messages/<idchat>")
+def getChat(idchat):
+    # get all the messages of a given idchat
+    return mdb.getChat(idchat)
 
 
 def main():

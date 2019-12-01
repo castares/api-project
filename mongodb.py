@@ -33,20 +33,23 @@ def newUser(idUser, userName, collection=users):
     return addDocument(collection, user)
 
 
-def newMessage(idUser, chatid, idMessage, datetime, text, collection=messages):
+def newMessage(idUser, idchat, idMessage, datetime, text, collection=messages):
     # Add a new messa to MongoDB messages Collection
-    message = {
-        'idUser': int(idUser),
-        'idChat': int(chatid),
-        'idMessage': int(idMessage),
-        'datetime': datetime,
-        'text': text
-    }
-    return addDocument(collection, message)
+    if int(idMessage) in messages.distinct("idMessage"):
+        raise ValueError
+    else:
+        message = {
+            'idUser': int(idUser),
+            'idChat': int(idchat),
+            'idMessage': int(idMessage),
+            'datetime': datetime,
+            'text': text
+        }
+        return addDocument(collection, message)
 
 
-def getChat(chatid, collection=messages):
-    return dumps(collection.find({'idChat': int(chatid)}))
+def getChat(idchat, collection=messages):
+    return dumps(collection.find({'idChat': int(idchat)}))
 
 
 def getuserName(idUser, collection=users):
