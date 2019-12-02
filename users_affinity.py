@@ -30,9 +30,9 @@ def similarityMatrix(users_messages):
     return sim_df.idxmax()
 
 
-def MostSimilarUser(idUser):
+def mostSimilarUser(iduser):
     df = similarityMatrix(processMessages(mdb.allMessages()))
-    return print(json.dumps({idUser: str(df.loc[idUser])}))
+    return json.dumps({iduser: str(df.loc[iduser])})
 
 
 def main():

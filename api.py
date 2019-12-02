@@ -21,9 +21,10 @@ def getuserName(iduser):
     return mdb.getuserName(iduser)
 
 
-@get("user/<iduser>/affinity")
+@get("/user/<iduser>/affinity")
 def getuserAffinity(iduser):
-    return aff.MostSimilarUser(iduser)
+    iduser = int(iduser)
+    return aff.mostSimilarUser(iduser)
 
 # Chat endpoint
 @post("/chat/newmessage")
