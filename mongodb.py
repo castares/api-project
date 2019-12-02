@@ -21,31 +21,34 @@ def addDocument(collection, document):
     return collection.insert_one(document)
 
 
-def newUser(idUser, userName, collection=users):
-    # Add a new user to MongoDB users Collection
-    if int(idUser) in users.distinct("idUser") or userName in users.distinct("userName"):
-        raise NameError
+def createUser(userName, collection=users):
+    # Add a new username to MongoDB users Collection
+    if userName in users.distinct("userName"):
+        raise NameError(f"userName already exists")
     else:
         user = {
-            'idUser': int(idUser),
+            'idUser': max(users.distinct("idUser"))+1,
             'userName': userName
         }
-    return addDocument(collection, user)
+        addDocument(collection, user)
+        return f'User created with userName {userName}'
 
 
-def newMessage(idUser, idchat, idMessage, datetime, text, collection=messages):
+def newMessage(idUser, idchat, datetime, text, collection=messages):
     # Add a new messa to MongoDB messages Collection
-    if int(idMessage) in messages.distinct("idMessage"):
-        raise ValueError
-    else:
-        message = {
-            'idUser': int(idUser),
-            'idChat': int(idchat),
-            'idMessage': int(idMessage),
-            'datetime': datetime,
-            'text': text
-        }
-        return addDocument(collection, message)
+    if int(idUser) not in users.distinct("idUser"):
+        raise NameError(
+            f"idUser doesn't exists. Create user before adding messages.")
+    message = {
+        'idUser': int(idUser),
+        'idChat': int(idchat),
+        'idMessage': max(messages.distinct("idMessage"))+1,
+        'datetime': datetime,
+        'text': text
+    }
+    addDocument(collection, message)
+
+    return
 
 
 def getChat(idchat, collection=messages):

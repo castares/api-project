@@ -2,6 +2,8 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import mongodb as mdb  # This project file mongodb.py
 from bson.json_util import loads, dumps
 import pandas as pd
+import numpy as np
+import json
 
 sid = SentimentIntensityAnalyzer()
 
@@ -16,10 +18,11 @@ def analyzeSentiment(idchat):
         conversation_polarity += snt['compound']
         polarity.append(snt['compound'])
     df['polarity'] = polarity
-    df.groupby('users').agg(['polarity']).sum()
-    print(f'conversation_polarity: {conversation_polarity}')
-    print(df)
-    return
+    df2 = df[["idUser", 'polarity']].groupby(by='idUser', as_index=False).sum()
+    return json.dumps({
+        'conversation_polarity': conversation_polarity,
+        'users_polarity': df2.to_json(orient='records')
+    })
 
 
 def main():
