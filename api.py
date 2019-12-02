@@ -54,7 +54,9 @@ def getSentiment(idchat):
 
 
 def main():
-    run(host='localhost', port=8000)
+    port = int(os.getenv('PORT', 8080))
+    host = os.getenv('IP', '0.0.0.0')
+    run(host=host, port=port, debug=True)
 
 
 if __name__ == '__main__':
