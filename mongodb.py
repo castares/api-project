@@ -48,7 +48,9 @@ def newMessage(idUser, idchat, datetime, text, collection=messages):
     }
     addDocument(collection, message)
 
-    return
+
+def allMessages():
+    return messages.find({}, {'idUser': 1, 'text': 1})
 
 
 def getChat(idchat, collection=messages):

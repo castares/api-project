@@ -1,10 +1,7 @@
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-import mongodb as mdb  # This project file mongodb.py
-from bson.json_util import loads, dumps
 import pandas as pd
 import numpy as np
 import json
-
 sid = SentimentIntensityAnalyzer()
 
 
