@@ -6,6 +6,7 @@ import os
 from pymongo import MongoClient
 import mongodb as mdb  # This project file mongodb.py
 import sentiment_analysis as snt  # This project file sentiment_analysis.py
+import users_affinity as aff  # This project file users_affinity.py
 
 # User endpoint
 @post("/user/create")
@@ -18,6 +19,11 @@ def createUser():
 def getuserName(iduser):
     # get the userName of a given idUser
     return mdb.getuserName(iduser)
+
+
+@get("user/<iduser>/affinity")
+def getuserAffinity(iduser):
+    return aff.MostSimilarUser(iduser)
 
 # Chat endpoint
 @post("/chat/newmessage")

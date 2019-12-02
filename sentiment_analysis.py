@@ -1,7 +1,13 @@
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-import pandas as pd
-import numpy as np
 import json
+from bson.json_util import loads, dumps
+import numpy as np
+import pandas as pd
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import mongodb as mdb  # This project file mongodb.py
+
+nltk.download("vader_lexicon")
+
 sid = SentimentIntensityAnalyzer()
 
 
