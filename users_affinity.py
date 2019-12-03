@@ -36,7 +36,7 @@ def mostSimilarUser(iduser):
 
 
 def main():
-    MostSimilarUser(0)
+    mostSimilarUser(0)
 
 
 if __name__ == '__main__':
