@@ -31,7 +31,7 @@ def createUser(userName, collection=users):
             'userName': userName
         }
         addDocument(collection, user)
-        return f'User created with userName {userName}'
+        return dumps(collection.find({'userName': userName}))
 
 
 def newMessage(idUser, idchat, datetime, text, collection=messages):
@@ -39,14 +39,16 @@ def newMessage(idUser, idchat, datetime, text, collection=messages):
     if int(idUser) not in users.distinct("idUser"):
         raise NameError(
             f"idUser doesn't exists. Create user before adding messages.")
+    idMessage = max(messages.distinct("idMessage"))+1
     message = {
         'idUser': int(idUser),
         'idChat': int(idchat),
-        'idMessage': max(messages.distinct("idMessage"))+1,
+        'idMessage': idMessage,
         'datetime': datetime,
         'text': text
     }
     addDocument(collection, message)
+    return dumps(collection.find({'idMessage': idMessage}))
 
 
 def allMessages():
