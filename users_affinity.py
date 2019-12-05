@@ -32,7 +32,7 @@ def similarityMatrix(users_messages):
 
 def mostSimilarUser(iduser):
     df = similarityMatrix(processMessages(mdb.allMessages()))
-    return json.dumps({{"iduser": iduser}: {"most_similar_user": str(df.loc[iduser])}})
+    return json.dumps({iduser: {"most_similar_user": str(df.loc[iduser])}})
 
 
 def main():
