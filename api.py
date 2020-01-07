@@ -4,9 +4,14 @@ from bottle import post, get, request, response, run, Bottle
 import re
 import os
 from pymongo import MongoClient
-import mongodb as mdb  # This project file mongodb.py
-import sentiment_analysis as snt  # This project file sentiment_analysis.py
-import users_affinity as aff  # This project file users_affinity.py
+import src.mongodb as mdb  # Local file src/mongodb.py
+import src.sentiment_analysis as snt  # Local file src/sentiment_analysis.py
+import src.users_affinity as aff  # Local file src/users_affinity.py
+
+# root
+@get("/")
+def homePage():
+    return "Chat Analyser"
 
 # User endpoint
 @post("/user/create")
@@ -19,6 +24,11 @@ def createUser():
 def getuserName(iduser):
     # get the userName of a given idUser
     return mdb.getuserName(iduser)
+
+
+@get("/user/list")
+def getuserList():
+    return
 
 
 @get("/user/<iduser>/affinity")

@@ -1,26 +1,25 @@
 # NLP Sentiment Analysis & Users Recommendation on a Bottle Rest API
 
-This API has been developed as a project on Ironhack's Data Analytics bootcamp. The goal of the project were: 
+I developed this project on Ironhack's Data Analytics bootcamp. The goals of the project are: 
 
 - (L1🧐) Write an API in bottle just to store chat messages in a database like mongodb or mysql.
 - (L2🥳) Extract sentiment from chat messages and perform a report over a whole conversation
 - (L3😎) Deploy the service with docker to heroku and store messages in a cloud database.
 - (L4🤭) Recommend friends to a user based on the contents from chat `documents` using a recommender system with `NLP` 
 
-To achieve those goals, we have created a rest API using Bottle Framework, linked to a MongoDB database stored in MongoDB Atlas. 
+To achieve those goals, I have created a rest API using Bottle Framework, linked to a MongoDB database stored in MongoDB Atlas. 
 
-Using nltk and sklearn the API, both the user and the chat endpoint Response users affinity recommendation and chat sentiment analysis respectively, from the available chats on the Database.
+Using nltk and sklearn, the app produces chat sentiment analysis and users affinity recommendation.
 
-The API is available online at Heroku from a Docker image. See Documentation below.
+The API is available online at Heroku. See Documentation below.
 
-
-URL: https://chats-analyser-api.herokuapp.com/
+URL: https://chats-analyzer-api.herokuapp.com/
 
 ### Documentation:
 
 ### 1. User endpoints:
 
-**POST** "/user/create": Create a new user into DB. 
+*POST* **"/user/create"**: Create a new user into DB. 
 - *Data:* `username`
 - *Response:* `user_id : username` 
     - Example of a Response: 
@@ -31,7 +30,7 @@ URL: https://chats-analyser-api.herokuapp.com/
     "userName": "Ms. Potato"
     }
 
-**GET** "/user/<iduser>": Get the username of a user id. 
+**GET** **"/user/[iduser]"**: Get the username of a user id. 
 - *Params:* `iduser`
 - *Response:* `iduser`, `username`
     - Example of a Response: 
@@ -43,7 +42,7 @@ URL: https://chats-analyser-api.herokuapp.com/
     }
 
 
-**GET** "/user/<iduser>/affinity": Get the username of a user id. 
+**GET** **"/user/[iduser]/affinity"**: Get the user id of the most similar user to the requested one. 
 - *Data:* `iduser`
 - *Response:* `iduser`, `most similar user`
     - Example of a Response: 
@@ -57,7 +56,7 @@ URL: https://chats-analyser-api.herokuapp.com/
 
 ### 2. Chat endpoints:
 
-**POST** "/chat/newmessage": Create a new message on a chat.
+**POST** **"/chat/newmessage"**: Create a new message on a chat.
 - *Data* `iduser`, `idChat`, `datetime`, `text`
 - *Response* `idMessage`
     - Example of a Response: 
@@ -71,7 +70,7 @@ URL: https://chats-analyser-api.herokuapp.com/
         "text": "Aloha"
     }
 
-**GET** "/chat/<idchat>": 
+**GET** **"/chat/<idchat>"**: 
 - *Purpose* Get all the messages of a given idchat.
 - *Data* `idchat`
 - *Response* `iduser`, `idChat`, `idMessage`, `datetime`, `text`
@@ -85,7 +84,7 @@ URL: https://chats-analyser-api.herokuapp.com/
         "datetime": "2019-10-17 10:15:41",
         "text": "Hey Mike, whats up??"}
 
-**GET** "/chat/<idchat>/sentiment": 
+**GET** **"/chat/<idchat>/sentiment"**: 
 - *Purpose* Get the polarity coefficient of the sum of all messsages on a given chat, and of every user participating in the chat. See [nltk documentation](https://www.nltk.org/api/nltk.sentiment.html?highlight=sentiment#module-nltk.sentiment.sentiment_analyzer) for more information about the coefficients. 
 - *Params* `idchat`
 - *Response* `conversation_polarity`, `users_polarity`
