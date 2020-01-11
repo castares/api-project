@@ -59,6 +59,10 @@ def getChat(idchat, collection=messages):
     return dumps(collection.find({'idChat': int(idchat)}))
 
 
+def getChatsandParticipants():
+    return dumps([{chat: list(messages.distinct('idUser', {'idChat': chat}))} for chat in messages.distinct("idChat")])
+
+
 def getuserName(idUser, collection=users):
     return dumps(collection.find({'idUser': int(idUser)}))
 

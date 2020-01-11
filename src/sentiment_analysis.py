@@ -4,15 +4,15 @@ import numpy as np
 import pandas as pd
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-import mongodb as mdb  # This project file mongodb.py
+# Local Files
+from .mongodb import getChat  # This project file mongodb.py
 
 nltk.download("vader_lexicon")
-
 sid = SentimentIntensityAnalyzer()
 
 
 def analyzeSentiment(idchat):
-    messages = loads(mdb.getChat(idchat))
+    messages = loads(getChat(idchat))
     df = pd.DataFrame(messages)
     polarity = []
     conversation_polarity = 0

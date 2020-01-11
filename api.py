@@ -16,7 +16,10 @@ def homePage():
 # User endpoint
 @post("/user/create")
 def createUser():
-    userName = request.forms.get("userName")
+    try:
+        userName = request.forms.get("userName")
+    except:
+        raise KeyError
     return mdb.createUser(userName)
 
 
@@ -24,11 +27,6 @@ def createUser():
 def getuserName(iduser):
     # get the userName of a given idUser
     return mdb.getuserName(iduser)
-
-
-@get("/user/list")
-def getuserList():
-    return
 
 
 @get("/user/<iduser>/affinity")
@@ -50,6 +48,12 @@ def createMessage():
         raise KeyError
 
     return mdb.newMessage(idUser, idchat, datetime, text)
+
+
+@get("/chat/list")
+def getChatsandParticipants():
+    # returns a list of dictionaries with the idchat as key, and the list of iduser per chat as value.
+    return mdb.getChatsandParticipants()
 
 
 @get("/chat/<idchat>")

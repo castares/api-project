@@ -1,7 +1,7 @@
 from sklearn.metrics.pairwise import euclidean_distances as distance
 import nltk
 from nltk.corpus import stopwords
-import mongodb as mdb  # This project file mongodb.py
+from .mongodb import allMessages  # This project file mongodb.py
 import json
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
@@ -31,7 +31,7 @@ def similarityMatrix(users_messages):
 
 
 def mostSimilarUser(iduser):
-    df = similarityMatrix(processMessages(mdb.allMessages()))
+    df = similarityMatrix(processMessages(allMessages()))
     return json.dumps({iduser: {"most_similar_user": str(df.loc[iduser])}})
 
 

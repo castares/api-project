@@ -30,7 +30,8 @@ URL: https://chats-analyzer-api.herokuapp.com/
     "userName": "Ms. Potato"
     }
 
-**GET** **"/user/[iduser]"**: Get the username of a user id. 
+
+*GET* **"/user/*[iduser]*"**: Get the username of a given userid. 
 - *Params:* `iduser`
 - *Response:* `iduser`, `username`
     - Example of a Response: 
@@ -42,7 +43,7 @@ URL: https://chats-analyzer-api.herokuapp.com/
     }
 
 
-**GET** **"/user/[iduser]/affinity"**: Get the user id of the most similar user to the requested one. 
+*GET* **"/user/*[iduser]*/affinity"**: Get the user id of the most similar user to the requested one. 
 - *Data:* `iduser`
 - *Response:* `iduser`, `most similar user`
     - Example of a Response: 
@@ -56,7 +57,7 @@ URL: https://chats-analyzer-api.herokuapp.com/
 
 ### 2. Chat endpoints:
 
-**POST** **"/chat/newmessage"**: Create a new message on a chat.
+*POST* **"/chat/newmessage"**: Create a new message on a chat.
 - *Data* `iduser`, `idChat`, `datetime`, `text`
 - *Response* `idMessage`
     - Example of a Response: 
@@ -70,7 +71,17 @@ URL: https://chats-analyzer-api.herokuapp.com/
         "text": "Aloha"
     }
 
-**GET** **"/chat/<idchat>"**: 
+*GET* **"/chat/list"**: 
+- *Purpose* Get a json object per chatid, with the chatid as key, and an array of the participant idusers.
+- *Response* {idChat : [idUser, idUser...]}
+    - Example of a Response: 
+        [{'0': [0, 1]},
+        {'1': [2, 3, 7, 8, 12]},
+        {'2': [1, 4]},
+        {'3': [0, 5]},
+        {'4': [6, 7]}]
+
+*GET* **"/chat/*[idchat]*"**: 
 - *Purpose* Get all the messages of a given idchat.
 - *Data* `idchat`
 - *Response* `iduser`, `idChat`, `idMessage`, `datetime`, `text`
@@ -84,10 +95,10 @@ URL: https://chats-analyzer-api.herokuapp.com/
         "datetime": "2019-10-17 10:15:41",
         "text": "Hey Mike, whats up??"}
 
-**GET** **"/chat/<idchat>/sentiment"**: 
-- *Purpose* Get the polarity coefficient of the sum of all messsages on a given chat, and of every user participating in the chat. See [nltk documentation](https://www.nltk.org/api/nltk.sentiment.html?highlight=sentiment#module-nltk.sentiment.sentiment_analyzer) for more information about the coefficients. 
-- *Params* `idchat`
-- *Response* `conversation_polarity`, `users_polarity`
+*GET* **"/chat/*[idchat]*/sentiment"**: 
+- *Purpose:* Get the polarity coefficient of the sum of all messsages on a given chat, and of every user participating in the chat. See [nltk documentation](https://www.nltk.org/api/nltk.sentiment.html?highlight=sentiment#module-nltk.sentiment.sentiment_analyzer) for more information about the coefficients. 
+- *Params:* `idchat`
+- *Response:* `conversation_polarity`, `users_polarity`
     - Example of a Response: 
     {
         "conversation_polarity": -1.1829,
