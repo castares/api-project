@@ -1,19 +1,8 @@
 # NLP Sentiment Analysis & Users Recommendation on a Bottle Rest API
 
-I developed this project on Ironhack's Data Analytics bootcamp. The goals of the project are: 
+Chat Analyzer is both a storage system for messaging and a set of tools to produce insights about the chats stored in it. The interaction with both the MongoDB database and the insights tools is through a Bottle based Rest API. The processing tools are developed using NLTK for Natural Language Processing (NLP) and sklearn for the user's affinity recommendation. The API is deployed at Heroku as a Docker Container. To know more, see the documentation below.
 
-- (L1🧐) Write an API in bottle just to store chat messages in a database like mongodb or mysql.
-- (L2🥳) Extract sentiment from chat messages and perform a report over a whole conversation
-- (L3😎) Deploy the service with docker to heroku and store messages in a cloud database.
-- (L4🤭) Recommend friends to a user based on the contents from chat `documents` using a recommender system with `NLP` 
-
-To achieve those goals, I have created a rest API using Bottle Framework, linked to a MongoDB database stored in MongoDB Atlas. 
-
-Using nltk and sklearn, the app produces chat sentiment analysis and users affinity recommendation.
-
-The API is available online at Heroku. See Documentation below.
-
-URL: https://chats-analyzer-api.herokuapp.com/
+API URL: https://chats-analyzer-api.herokuapp.com/
 
 ### Documentation:
 
@@ -43,15 +32,13 @@ URL: https://chats-analyzer-api.herokuapp.com/
     }
 
 
-*GET* **"/user/*[iduser]*/affinity"**: Get the user id of the most similar user to the requested one. 
+*GET* **"/user/*[iduser]*/affinity"**: Get the user id of the three users closest to the requested one. 
 - *Data:* `iduser`
 - *Response:* `iduser`, `most similar user`
     - Example of a Response: 
-    {
-        {"iduser": 
-            "7"}: 
-            {"most similar user": 
-                "5")}
+    {'1': {
+        'recommended_users': [5, 6, 4]
+        }
     }
 
 
@@ -73,13 +60,13 @@ URL: https://chats-analyzer-api.herokuapp.com/
 
 *GET* **"/chat/list"**: 
 - *Purpose* Get a json object per chatid, with the chatid as key, and an array of the participant idusers.
-- *Response* {idChat : [idUser, idUser...]}
+- *Response* {`idChat` : [`idUser`, `idUser`...]}
     - Example of a Response: 
-        [{'0': [0, 1]},
-        {'1': [2, 3, 7, 8, 12]},
-        {'2': [1, 4]},
-        {'3': [0, 5]},
-        {'4': [6, 7]}]
+        [{"0": [0, 1]},
+        {"1": [2, 3, 7, 8, 12]},
+        {"2": [1, 4]},
+        {"3": [0, 5]},
+        {"4": [6, 7]}]
 
 *GET* **"/chat/*[idchat]*"**: 
 - *Purpose* Get all the messages of a given idchat.

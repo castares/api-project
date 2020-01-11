@@ -5,6 +5,7 @@ from .mongodb import allMessages  # This project file mongodb.py
 import json
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
+import numpy as np
 
 
 def processMessages(messages):
@@ -27,12 +28,19 @@ def similarityMatrix(users_messages):
     similarity_matrix = distance(df, df)
     sim_df = pd.DataFrame(
         similarity_matrix, columns=users_messages.keys(), index=users_messages.keys())
-    return sim_df.idxmax()
+    return sim_df
 
 
-def mostSimilarUser(iduser):
-    df = similarityMatrix(processMessages(allMessages()))
-    return json.dumps({iduser: {"most_similar_user": str(df.loc[iduser])}})
+def similarUsers(iduser):
+    sim_df = similarityMatrix(processMessages(allMessages()))
+    # Remove diagonal max values and set those to 0
+    np.fill_diagonal(sim_df.values, 0)
+    return json.dumps({
+        iduser: {
+            'recommended_users': [e for e in list(
+                sim_df[iduser].sort_values(ascending=False)[0:3].index)]
+        }
+    })
 
 
 def main():

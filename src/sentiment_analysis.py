@@ -23,7 +23,7 @@ def analyzeSentiment(idchat):
     df['polarity'] = polarity
     df2 = df[["idUser", 'polarity']].groupby(by='idUser', as_index=False).sum()
     return json.dumps({
-        'conversation_polarity': conversation_polarity,
+        'conversation_polarity': conversation_polarity/len(df['text']),
         'users_polarity': df2.to_json(orient='records')
     })
 

@@ -31,7 +31,7 @@ def createUser(userName, collection=users):
             'userName': userName
         }
         addDocument(collection, user)
-        return dumps(collection.find({'userName': userName}))
+        return dumps(collection.find({'userName': userName}, {'_id': 0}))
 
 
 def newMessage(idUser, idchat, datetime, text, collection=messages):
@@ -64,7 +64,7 @@ def getChatsandParticipants():
 
 
 def getuserName(idUser, collection=users):
-    return dumps(collection.find({'idUser': int(idUser)}))
+    return dumps(collection.find({'idUser': int(idUser)}, {'_id': 0}))
 
 
 def main():

@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 
-from bottle import post, get, request, response, run, Bottle
+from bottle import post, get, request, response, run, template, Bottle
 import re
 import os
 from pymongo import MongoClient
@@ -8,10 +8,10 @@ import src.mongodb as mdb  # Local file src/mongodb.py
 import src.sentiment_analysis as snt  # Local file src/sentiment_analysis.py
 import src.users_affinity as aff  # Local file src/users_affinity.py
 
-# root
+# Homepage
 @get("/")
-def homePage():
-    return "Chat Analyser"
+def index():
+    return template('./html/index.html')
 
 # User endpoint
 @post("/user/create")
@@ -32,7 +32,7 @@ def getuserName(iduser):
 @get("/user/<iduser>/affinity")
 def getuserAffinity(iduser):
     iduser = int(iduser)
-    return aff.mostSimilarUser(iduser)
+    return aff.similarUsers(iduser)
 
 # Chat endpoint
 @post("/chat/newmessage")
